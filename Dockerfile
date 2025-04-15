@@ -1,27 +1,18 @@
-# Use an official Node runtime as a parent image
-FROM node:22-alpine
+FROM node:22-alpine AS client-build
+WORKDIR /app/client
+COPY client/package*.json ./
+RUN npm install
+COPY client/ .
+RUN npm run build
 
-# Create and set the working directory
+FROM node:22-alpine AS server-build
 WORKDIR /app
-
-# Copy package files and install dependencies
-COPY package*.json ./
+COPY server/package*.json ./
 RUN npm install --production
+COPY server/ .
 
-# Copy the rest of the application source code
-COPY . .
+COPY --from=client-build /app/client/build ./client/build
 
-# If your project needs to be built (for example, a React app inside "client"),
-# then add a build step here, e.g.:
-# WORKDIR /app/client
-# RUN npm install && npm run build
-# WORKDIR /app
+EXPOSE 5000
 
-# Expose the port that the app listens on (Fly.io defaults to port 8080)
-EXPOSE 8080
-
-# Set environment variable for production (if needed)
-ENV NODE_ENV=production
-
-# Define the command to run your app (adjust as needed)
-CMD ["node", "server.js"]
+CMD ["node", "index.js"]
