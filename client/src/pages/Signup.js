@@ -68,7 +68,7 @@ function Signup() {
         </div>
         <div className="col-md-6">
           <img
-            src="phishlogo.png"
+            src="sundayshow.png"
             alt=""
             className="img-fluid"
           />

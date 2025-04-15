@@ -25,7 +25,7 @@ function NavBar() {
     return (
     <nav className="navbar navbar-light bg-light navbar-expand-sm">
       <div className="container d-flex justify-content-center">
-        <a href="/secret"><img src="phishlogo.png" alt="" width="120" height="60"></img></a>
+        <img src="phishlogo.png" alt="" width="120" height="60"></img>
         <a className="navbar-brand" >Phish Stats</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

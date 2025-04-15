@@ -22,6 +22,16 @@ db.serialize(() => {
         password TEXT NOT NULL
       )
     `);
+    db.run(`
+        CREATE TABLE IF NOT EXISTS data (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL,
+          chartData TEXT NOT NULL,
+          total TEXT NOT NULL,
+          filter TEXT NOT NULL,
+          title TEXT NOT NULL
+        )
+    `);
   }
 );
 
@@ -55,4 +65,42 @@ function getUser(username, callback) {
     });
 }
 
-module.exports = { db, createUser, getUser };
+function saveChart(username, chartData, total, filter, title) {
+    return new Promise((resolve, reject) => {
+      const chartDataStr = JSON.stringify(chartData);
+      db.run(
+        `INSERT INTO data (username, chartData, total, filter, title) VALUES (?, ?, ?, ?, ?)`,
+        [username, chartDataStr, total, filter, title],
+        function (err) {
+          if (err) {
+            return reject(err);
+          } 
+          resolve();
+        }
+      );
+    });
+}
+
+function getCharts(username) {
+    return new Promise((resolve, reject) => {
+      db.all(
+        `SELECT id, chartData, total, filter, title FROM data WHERE username = ?`,
+        [username],
+        (err, rows) => {
+          if (err) {
+            return reject(err);
+          }
+          const formatted = rows.map(row => ({
+            id: row.id,
+            chartData: JSON.parse(row.chartData),
+            total: row.total,
+            filter: row.filter,
+            title: row.title,
+          }));
+          resolve(formatted);
+        }
+      );
+    });
+  }
+
+module.exports = { db, createUser, getUser, saveChart, getCharts };

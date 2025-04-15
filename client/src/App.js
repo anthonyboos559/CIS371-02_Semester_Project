@@ -6,7 +6,6 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Logout from './pages/Logout';
-import Secret from './pages/Secret';
 import NavBar from './components/NavBar';
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/secret" element={<Secret />} />
       </Routes>
     </Router>
     );
